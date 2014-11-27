@@ -1,0 +1,108 @@
+.\"
+.\"	$Id$
+.\"
+.\" Copyright (c) 1993 Jeff Weisberg
+.\" see the file "License"
+
+.TH ASX 1
+.SH NAME
+as48, as96 \- cross assemblers
+.SH SYNOPSIS
+.B as48
+[options]
+.I filenames...
+.LP
+.B as48
+[options]
+.I filename...
+
+.SH DESCRIPTION
+Cross assemblers for the intel 8048 and 8096 families of MCUs.
+They take your assembly code and produce the appropriate
+output (in any of binary, intel HEX, or Motorola S format).
+They use a syntax similar to the standard UN*X assembler "as".
+The input files are automatically preprocessed with the C
+preprocessor "cpp" with the symbols
+.B __AS_X__
+and 
+.BR mcs96 ,
+.B MCS96
+or
+.BR mcs48 ,
+.B MCS48
+as appropriate.
+
+.SH OPTIONS
+.TP
+.BI \-o  " file "
+specify the output file
+.TP
+.B \-V
+display the version
+.TP
+.B \-s
+the output will be in Motorola S format
+.TP
+.B \-h
+the output will be in intel HEX format
+.TP
+.B \-b
+the output will be raw binary format
+.TP
+.B \-v
+verbose output
+.TP
+.B \-T
+generate a symbol table
+.TP
+.BI \-t " pathname "
+specify a file for the symbol table output (implies -T)
+.TP
+.B \-L
+include local labels in the symbol table output
+.TP
+.B \-O
+Be optimistic with conditional jumps, do not re-write if target is too far.
+This assunmes that the programmer knows best, although the code produced
+may be incorrect.
+.TP
+.BI \-I pathname
+add
+.I pathname
+to yhe directories to be searched for
+.B #include
+files
+.TP
+.BI \-D foo[=bar]
+define the symbol
+.I foo
+as
+.I bar
+or 1
+.TP
+.BI \-U foo
+undefine the preprocessor symbol
+.I foo
+
+
+
+.SH SEE ALSO
+Yellowstone National Park.
+
+.SH DIAGNOSTICALS
+On the chance that you should err in your code, you will be
+notified with an appropriate message.
+
+.SH BUGS
+.LP
+abominations such as
+.I pop #foo
+are allowed through.
+.LP
+there is no range check on forward conditional jumps
+.LP
+there may not be more than 4292967296 occurrances of
+.BR .proc .
+
+
+

@@ -1,0 +1,41 @@
+
+Congratulations!
+You are now the proud owner of a beautiful set of cross assemblers for
+the 8048 and 8096/196 families of intel MCU's.
+
+It is synatactilly similar to the UN*X assembler "as", with C like
+expressions, and suchlikes.
+
+It is written in C++ and has been compiled with/on:
+	Sun[34] with
+			Sun's CC
+			GNU's gcc(2.3, 2.4)
+
+To build:
+
+-	edit the Makefile as you see fit, making sure one or both
+	of 48 or 96 is on the TARGET line.
+
+-	type "make"
+
+-	wait
+
+-	enjoy! (send in bug report)
+
+
+Now how much would you pay?
+But wait that's not all, you also get:
+
+	a set of *Beautiful* header files defining all of the
+	8096/196 SFRs and bit locations!
+
+	a handcrafted leather easy chair (while supplies last)
+
+
+
+Send feedback to:
+
+	Jeff Weisberg
+	jaw@magoo.roc.ny.us
+
+

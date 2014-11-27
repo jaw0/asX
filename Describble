@@ -1,0 +1,149 @@
+
+Syntactical desriptuation follows:
+
+
+as the input goes thru' CPP you may #define, and #include to
+your hearts content, this allows some very poewerful
+macro-ability.
+
+assembler psuedo-ops:
+--------------------
+
+.org
+	set the program counter
+
+.even
+	make the program counter even
+
+.align N
+	make the program counter align on an N boundry
+	N must be 1, 2, 4, 8, 16, 43, 64, 128, or 256
+
+.skip N
+	skip N bytes of space
+	(equivalant to .org $ + N but is cleaner)
+
+.byte N {, N}
+	insert the specified bytes
+
+.word N {, N}
+	insert words (16 bit values)
+
+.long N {, N}
+	insert longs (32 bit values)
+
+.ascii "string"
+	insert the string. C like \c, \nnn type escapes within
+	the string will work as expected
+
+.asciz "string"
+	inset the string and terminate with a NULL
+
+.enum a[=N] {, b[=N]}
+	define values for symbols, similar to C enum
+	if expilict values are not given they will be assigned
+	succesive values
+	".enum a=0, b, c, d" assigns a=0, b=1, c=2, and d=3
+
+.proc
+	enter a new scope for local labels, local labels before
+	this line will cease to exist, allowing a new label
+	with the same name to be used
+
+.abort
+	abort assembly
+
+.near
+	specify that forward reference in a conditional jump is nearby
+	this will prevent it from being re-written in a more pessimistic
+	manner (but if the target is *not* nearthe code will be wrong).
+
+.hex ["file"]
+.bin ["file"]
+.s19 ["file"]
+	set the format for the output file, and optionaly
+	specify the name of the output file
+	equivalent to using the command line options:
+	-h -s -b -o
+
+.symtab ["file"]
+	produce a symbol table, and optionally specify a name
+	for the symbol table output file
+	quivalent to using the command line options: -t -T
+
+.symlocal
+	put local symbols in the symbol table
+	equivalent to the -L command line option
+
+foo:
+	a label, will be assigned the value of the program counter
+	labels may contain letters numbers and the characters $ . _
+	but the first chacacter must not be a number
+
+foo$:
+	a local label (notice the $ at its end?)
+	it has a scope extending between .proc's and is unavailable
+	outside of this, thus allowing the reuse of local labels
+
+foo  =  bar
+foo equ bar
+	the symbol foo will be bar
+
+; I am a comment!
+/* so am I */
+	comments begin with ; and run to the end of line
+	or enclosed in /* */
+
+also recognizes such abominations as:
+	db, dfb, dw, dfw, dfs
+	so as to fiegn compatibility with that other assembler
+
+Numbers:
+-------
+
+Hex:	$123 	0x123
+Octal:	0123 	0o123
+Binary:	%0101	0b0101
+char:	'c'	`c
+
+
+. or $	by themselves refer to the value of the program counter at the
+	beginning of the line it is on
+	"foo: .byte $, $, $" is the same as "foo: .byte foo, foo, foo"
+
+arbitrary expressions may be used anywhere a constant is called
+for (except .align) containing:
+
+	() {}		(either type as perentheses)
+	+ - * /		(arthmetical)
+	& | ^ ~		(logical)
+	<< >>		(shifting)
+
+precidence rules are as those in C.
+internally, the assembler uses longs (32bits) to represent
+intermediate values
+
+
+8096 smart jumps:
+---------------
+
+if the assembler comes across a statement such as:
+	jc foo
+where foo is either unknown, or known but is too
+far away, it will re-write the code as:
+	jnc X
+	ljmp foo
+      X:
+thus the code will be garenteed to work, but may not be optimal,
+if you, the programmer know that foo is unknown but will be within
+range, this behavior can be overridden with either the -O command
+line option, or by writing the statement as:
+	jc .near foo
+
+in addition to the standard sjmp/scall/ljmp/lcall the assembler
+will also accept jmp/call and use the short or long form as
+apropriate.
+
+
+
+

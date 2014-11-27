@@ -1,0 +1,77 @@
+
+
+// $Id: token.h,v 1.7 1993/08/02 23:59:36 jaw Exp $
+
+// Copyright (c) 1993 Jeff Weisberg
+// see the file "License"
+
+#ifndef _TOKEN_H
+#define _TOKEN_H
+
+#include <symtab.h>
+
+enum Mnemonic {
+	NONE = 0,
+		EOFILE, EOLINE, CONST, FWDREF, LABEL,
+		STRING, COMMA, POUND, DOLLAR,
+		DOT, ATSIGN, COLON,
+		PLUS, MINUS, TIMES, DIVIDE, MODULO,
+		RSHIFT, LSHIFT,
+		CHAND, CHXOR, CHOR, CHNOT,
+		RPAREN, LPAREN, RBRACK, LBRACK,
+		RBRACE, LBRACE, DQUOTE, SQUOTE, 
+	       
+		// psuedo ops
+		ORG, TITLE, EQU,
+		ASCII, ASCIZ, BYTE, WORD, LONG, PSSKIP, ALIGN, EVEN,
+		PROC, GLOBL, ABORT, ENUM,
+		NEAR, DOHEX, DOS19, DOBIN, DOSYM, DOLOCAL, DUP, 
+
+		// built in functions (RSN?)
+		LOG, EXP, SIN, COS, TAN, ATAN, ASIN, ACOS, 
+
+		// mnemonics
+#ifdef MCS48		
+		// mcs-48
+		ADD, ADDC, ANL, ORL, XRL, INC, DEC, CLR, DAA, SWAP,
+		RLA, RLCA, RRA, RRCA, INA, INS, OUTL, BUS, MOVD,
+		JMP, JMPP, DJNZ, JC, JNC, JZ, JNZ, JT0, JNT0, JT1, JNT1,
+		JF0, JF1, JTF, JNI, JB0, JB1, JB2, JB3, JB4, JB5,
+		JB6, JB7, CALL, RET, RETR, CPL, MOV, XCH, XCHD,
+		MOVX, MOVP, MOVP3, STRT, STOP, DIS, ENABLE,
+		NOP, AAA, TTT, III, TCNT, TCNTI, CNT, RB0, RB1, MB0, MB1,
+		CLK, ENT0, R0, R1, R2, R3, R4, R5, R6, R7, F0, F1,
+		P1, P2, P3, P4, P5, P6, P7, CCC, PSW, ORLD, ANLD,
+		SEL, 
+#endif
+#ifdef MCS96
+		ADD, ADDB, ADDC, ADDCB, SUB, SUBB, SUBC, SUBCB, CMP, CMPB,
+		MUL, MULB, MULU, MULUB, DIV, DIVB, DIVU, DIVUB, AND, ANDB,
+		OR, ORB, XOR, XORB, LD, LDB, ST, STB, LDBSE, LDBZE, PUSH,
+		POP, PUSHF, POPF, SJMP, LJMP, JMP, BR, SCALL, LCALL, CALL,
+		RET, JC, JNC, JE, JNE, JGE, JLT, JGT, JLE, JH, JNH, JV,
+		JNV, JNVT, JST, JNST, JBS, JBC, DJNZ, DJNZW, DEC, DECB,
+		INC, INCB, NEG, NEGB, EXT, EXTB, NOT, NOTB, CLR, CLRB,
+		SHL, SHLB, SHLL, SHR, SHRB, SHRL, SHRA, SHRAB, SHRAL,
+		SETC, CLRC, CLRVT, RST, DI, EI, NOP, SKIP, NORML, TRAP,
+		PUSHA, POPA, IPLPD, CMPL, BMOV, BMOVI, DPTS, EPTS, TIJMP,
+		JVT, XCH, XCHB, 
+#endif			
+};
+
+class Token {
+  public:
+	long 	 value;
+	char     name[1024]; 
+	Mnemonic mnem;
+	Symbol   *symb;
+};
+
+
+extern Token currtok;
+
+
+#endif !_TOKEN_H
+
+
+
